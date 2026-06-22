@@ -1,0 +1,63 @@
+** sch_path: /foss/designs/sample-ota_gf180mcuD/xschem/prototype_amp.sch
+**.subckt prototype_amp
+XM1 vs1_n vcmfb vss vss nfet_03v3 L=0.36u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM3 vs1_n vin_p vtail vdd pfet_03v3 L=0.36u W=23u nf=8 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM5 vtail vbias vdd vdd pfet_03v3 L=0.54u W=9u nf=3 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM7 vout_n vs1_p vss vss nfet_03v3 L=0.54u W=32.6u nf=10 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+C1 vs1_p vout_n 250f
+C2 vs1_n vout_p 250f
+C3 vout_p vss 500f
+C4 vout_n vss 500f
+XM8 vout_n vbias vdd vdd pfet_03v3 L=0.54u W=39u nf=13 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM10 vbias vbias vdd vdd pfet_03v3 L=0.54u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+I0 vbias vss 10u
+XM9 vout_p vbias vdd vdd pfet_03v3 L=0.54u W=39u nf=13 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+V1 vdd vss 2
+V2 vss 0 0
+V3 net1 vss {vin_cm}
+V5 vin_p net1 DC 0 AC 0.5 0
+V4 vin_n net1 DC 0 AC 0.5 180
+E1 vcmfb vss vocm net4 100
+E2 net2 vss vout_p vss 0.5
+E3 net3 vss vout_n vss -0.5
+E4 net4 vss net2 net3 1
+V6 vocm vss {vout_cm}
+XM4 vs1_p vin_n vtail vdd pfet_03v3 L=0.36u W=23u nf=8 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 vs1_p vcmfb vss vss nfet_03v3 L=0.36u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM6 vout_p vs1_n vss vss nfet_03v3 L=0.54u W=32.6u nf=10 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+**** begin user architecture code
+
+.param vin_cm=0.8
+.param vout_cm=1
+.control
+save all
+save @m.xm1.m0[id] @m.xm1.m0[gm] @m.xm1.m0[gds]
+save @m.xm3.m0[id] @m.xm3.m0[gm] @m.xm3.m0[gds]
+save @m.xm6.m0[id] @m.xm6.m0[gm] @m.xm6.m0[gds]
+save @m.xm8.m0[id] @m.xm8.m0[gm] @m.xm8.m0[gds]
+
+op
+ac dec 10 1 1G
+
+setplot ac1
+let vdiff = v(vout_p) - v(vout_n)
+write output.raw
+.endc
+
+
+.include /foss/pdks/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+
+**** end user architecture code
+**.ends
+.end

@@ -1,0 +1,116 @@
+** sch_path: /foss/designs/sample-ota_gf180mcuD/xschem/top_level/top_level_tb.sch
+**.subckt top_level_tb
+x1 vdd vss vin_p vin_n vout_n vout_p vocm_set ib top_level
+C1 vout_n vss 500f
+C2 vout_p vss 500f
+I0 ib vss 10u
+V1 vocm_set vss 1
+V3 vin_cm vss {vin_cm}
+V5 vin_p vin_cm DC 0 AC 0.5 0
+V4 vin_n vin_cm DC 0 AC 0.5 180
+V2 vdd vss 2
+V6 vss 0 0
+**** begin user architecture code
+
+.param vin_cm=0.8
+.param vout_cm=1
+.control
+save all
+save @m.x1.x1.xm1.m0[gm] @m.x1.x1.xm1.m0[gds] @m.x1.x1.xm1.m0[id]
+save @m.x1.x1.xm3.m0[gm] @m.x1.x1.xm3.m0[gds] @m.x1.x1.xm3.m0[id]
+save @m.x1.x1.xm5.m0[gm] @m.x1.x1.xm5.m0[gds] @m.x1.x1.xm5.m0[id]
+save @m.x1.x2.xm1.m0[gm] @m.x1.x2.xm1.m0[gds] @m.x1.x2.xm1.m0[id]
+save @m.x1.x2.xm2.m0[gm] @m.x1.x2.xm2.m0[gds] @m.x1.x2.xm2.m0[id]
+
+op
+write output_op.raw
+ac dec 10 1 1G
+
+setplot ac1
+let vdiff = v(vout_p) - v(vout_n)
+write output.raw
+.endc
+
+
+.include /foss/pdks/gf180mcuD/libs.tech/ngspice/design.ngspice
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice res_typical
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice moscap_typical
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice mimcap_typical
+
+**** end user architecture code
+**.ends
+
+* expanding   symbol:  top_level/top_level.sym # of pins=8
+** sym_path: /foss/designs/sample-ota_gf180mcuD/xschem/top_level/top_level.sym
+** sch_path: /foss/designs/sample-ota_gf180mcuD/xschem/top_level/top_level.sch
+.subckt top_level vdd vss vin_p vin_n vout_p vout_n vocm_set i_bias
+*.iopin vdd
+*.iopin vss
+*.iopin vin_p
+*.iopin vin_n
+*.iopin vout_p
+*.iopin vout_n
+*.iopin vocm_set
+*.iopin i_bias
+x1 vin_p vin_n net2 net1 vdd vss i_bias vcmfb input_stage
+x2 vdd vss net2 net1 vout_p vout_n i_bias output_stage
+E1 vcmfb vss vocm_set vocm_meas 100
+E2 vout_p_div2 vss vout_p vss 0.5
+E3 vout_n_div2_inv vss vout_n vss -0.5
+E4 vocm_meas vss vout_p_div2 vout_n_div2_inv 1
+XM1 i_bias i_bias vdd vdd pfet_03v3 L=0.54u W=3u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+.ends
+
+
+* expanding   symbol:  input_stage/input_stage.sym # of pins=8
+** sym_path: /foss/designs/sample-ota_gf180mcuD/xschem/input_stage/input_stage.sym
+** sch_path: /foss/designs/sample-ota_gf180mcuD/xschem/input_stage/input_stage.sch
+.subckt input_stage vin_p vin_n vout_p vout_n vdd vss tail_bias load_bias
+*.iopin vin_p
+*.iopin vin_n
+*.iopin vout_p
+*.iopin vout_n
+*.iopin vdd
+*.iopin vss
+*.iopin tail_bias
+*.iopin load_bias
+XM1 vout_p load_bias vss vss nfet_03v3 L=0.36u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 vout_n load_bias vss vss nfet_03v3 L=0.36u W=1.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM3 vout_p vin_n vtail vtail pfet_03v3 L=0.36u W=23u nf=8 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM5 vtail tail_bias vdd vdd pfet_03v3 L=0.54u W=9u nf=3 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM4 vout_n vin_p vtail vtail pfet_03v3 L=0.36u W=23u nf=8 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+.ends
+
+
+* expanding   symbol:  output_stage/output_stage.sym # of pins=7
+** sym_path: /foss/designs/sample-ota_gf180mcuD/xschem/output_stage/output_stage.sym
+** sch_path: /foss/designs/sample-ota_gf180mcuD/xschem/output_stage/output_stage.sch
+.subckt output_stage vdd vss vin_p vin_n vout_p vout_n load_bias
+*.iopin vdd
+*.iopin vss
+*.iopin vin_p
+*.iopin vin_n
+*.iopin vout_p
+*.iopin vout_n
+*.iopin load_bias
+XM1 vout_n vin_p vss vss nfet_03v3 L=0.54u W=32.6u nf=10 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 vout_n load_bias vdd vdd pfet_03v3 L=0.54u W=39u nf=13 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XC2 vout_n vin_p cap_mim_2f0fF c_width=12.5e-6 c_length=10e-6
+XC1 vout_p vin_n cap_mim_2f0fF c_width=12.5e-6 c_length=10e-6
+XM4 vout_p load_bias vdd vdd pfet_03v3 L=0.54u W=39u nf=13 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM3 vout_p vin_n vss vss nfet_03v3 L=0.54u W=32.6u nf=10 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+.ends
+
+.end
