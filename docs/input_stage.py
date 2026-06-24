@@ -19,14 +19,20 @@ gm_id_input = 15
 id_input = (gm_input/gm_id_input)
 id_w_input = PCH.lookup('ID_W', GM_ID=gm_id_input, VDS=vds, VSB=vsb, L=l)
 w_input = id_input / id_w_input
+gm_gds_input = PCH.lookup('GM_GDS', GM_ID=gm_id_input, VDS=vds, VSB=vsb, L=l)
 print(f'Input Width: {w_input}')
-
+print(f'Input gm: {gm_input}')
+print(f'Input gds: {gm_input / gm_gds_input}')
 gm_id_load = 8
 
 id_load = id_input
 id_w_load = NCH.lookup('ID_W', GM_ID=gm_id_load, VDS=vds, VSB=vsb, L=l)
 w_load = id_load / id_w_load
+gm_gds_load = NCH.lookup('GM_GDS', GM_ID=gm_id_input, VDS=vds, VSB=vsb, L=l)
+gm_load = id_load * gm_id_load
 print(f'Load Width: {w_load}')
+print(f'Load gm: {gm_load}')
+print(f'Load gds: {gm_load / gm_gds_load}')
 
 id_tail = id_input*2
 print(f'Tail Current: {id_tail}')

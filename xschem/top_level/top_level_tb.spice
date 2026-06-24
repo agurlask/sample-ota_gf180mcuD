@@ -16,19 +16,19 @@ V6 vss 0 0
 .param vout_cm=1
 .control
 save all
-save @m.x1.x1.xm1.m0[gm] @m.x1.x1.xm1.m0[gds] @m.x1.x1.xm1.m0[id]
-save @m.x1.x1.xm3.m0[gm] @m.x1.x1.xm3.m0[gds] @m.x1.x1.xm3.m0[id]
-save @m.x1.x1.xm5.m0[gm] @m.x1.x1.xm5.m0[gds] @m.x1.x1.xm5.m0[id]
-save @m.x1.x2.xm1.m0[gm] @m.x1.x2.xm1.m0[gds] @m.x1.x2.xm1.m0[id]
-save @m.x1.x2.xm2.m0[gm] @m.x1.x2.xm2.m0[gds] @m.x1.x2.xm2.m0[id]
+save @m.x1.x1.xm1.m0[gm] @m.x1.x1.xm1.m0[gds] @m.x1.x1.xm1.m0[id] @m.x1.x1.xm1.m0[vdsat]
+save @m.x1.x1.xm3.m0[gm] @m.x1.x1.xm3.m0[gds] @m.x1.x1.xm3.m0[id] @m.x1.x1.xm3.m0[vdsat]
+save @m.x1.x1.xm5.m0[gm] @m.x1.x1.xm5.m0[gds] @m.x1.x1.xm5.m0[id] @m.x1.x1.xm5.m0[vdsat]
+save @m.x1.x2.xm1.m0[gm] @m.x1.x2.xm1.m0[gds] @m.x1.x2.xm1.m0[id] @m.x1.x2.xm1.m0[vdsat]
+save @m.x1.x2.xm2.m0[gm] @m.x1.x2.xm2.m0[gds] @m.x1.x2.xm2.m0[id] @m.x1.x2.xm2.m0[vdsat]
 
 op
 write output_op.raw
-ac dec 10 1 1G
+*ac dec 1000 1 1G
 
-setplot ac1
-let vdiff = v(vout_p) - v(vout_n)
-write output.raw
+*setplot ac1
+*let vdiff = v(vout_p) - v(vout_n)
+*write output.raw
 .endc
 
 

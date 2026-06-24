@@ -37,17 +37,20 @@ gain_db_p = 20 * np.log10(gm_gds_p)
 plt.figure(figsize=(8, 6))
 for i, l in enumerate(l_arr):
     plt.plot(gm_id_arr, gain_db_n[:, i], label=f'L = {l:.2f} µm')
+plt.axhline(y=44, color='black', linestyle='dashed', label='44 dB')
 plt.xlabel('gm/Id (S/A)')
 plt.ylabel('Intrinsic Gain (dB)')
 plt.title('NMOS Intrinsic Gain vs gm/Id')
 plt.legend(fontsize=8, ncol=2)
 plt.grid(True)
 plt.tight_layout()
+plt.savefig('nmos_gm_id_l_sweep.png')
 
 # Plot PMOS
 plt.figure(figsize=(8, 6))
 for i, l in enumerate(l_arr):
     plt.plot(gm_id_arr, gain_db_p[:, i], label=f'L = {l:.2f} µm')
+plt.axhline(y=41, color='black', linestyle='dashed', label='41 dB')
 plt.xlabel('gm/Id (S/A)')
 plt.ylabel('Intrinsic Gain (dB)')
 plt.title('PMOS Intrinsic Gain vs gm/Id')
@@ -55,4 +58,4 @@ plt.legend(fontsize=8, ncol=2)
 plt.grid(True)
 plt.tight_layout()
 
-plt.show()
+plt.savefig('pmos_gm_id_l_sweep.png')
